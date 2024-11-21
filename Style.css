@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;00;600;700&display=swap');
 
 :root{
-    --cyan:#5EF3FF;
+    --cyan:#55FFE1;
 
 
 }
@@ -47,6 +47,12 @@ header div .logo{
 header div img{
     height: 50px; 
     width: auto;
+}
+header div #s1{
+    color:#82FDC4 ;
+}
+header div #s2{
+    color:#55FFE1 ;
 }
 
 header div{
