@@ -3,6 +3,7 @@ import PlaceCarditem from './PlaceCardItem';
 
 
 
+
 function PlacesToVisit({ trip }) {
   return (
     <div>
@@ -15,6 +16,7 @@ function PlacesToVisit({ trip }) {
               {item.places.map((place, placeIndex) => (
                 <div key={placeIndex} className='my-3'>
                   <PlaceCarditem place={place}/>
+                  
                   
                 </div>
               ))}
