@@ -1,6 +1,7 @@
 import React from 'react'
+import PlaceCarditem from './PlaceCardItem'
 
-function PlaceToVisit() {
+function PlaceToVisit({trip}) {
   return (
     <div>
       <h2 className="font-bold text-xl mt-5 mb-5">Places to Visit</h2>
