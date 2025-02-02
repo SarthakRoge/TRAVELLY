@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { FaTimes } from 'react-icons/fa';
 import Button from '../common/Button';
+import { toast } from 'react-hot-toast';
 
 const MobileMenu = ({ isOpen, onClose, user, onSignOut }) => {
   const navigate = useNavigate();
@@ -15,16 +16,25 @@ const MobileMenu = ({ isOpen, onClose, user, onSignOut }) => {
     onClose();
   };
 
+  const handleMyTripsClick = (e) => {
+    e.preventDefault();
+    if (!user) {
+      toast.error('Please sign in to view your trips');
+      navigate('/signin');
+      return;
+    }
+    navigate('/my-trips');
+    onClose();
+  };
+
   return (
     <>
-      {/* Overlay */}
       <div
         className={`fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300 z-40
           ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         onClick={onClose}
       />
 
-      {/* Slide-out menu */}
       <div
         className={`fixed top-0 right-0 h-full w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-50
           ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
@@ -54,17 +64,13 @@ const MobileMenu = ({ isOpen, onClose, user, onSignOut }) => {
               </NavLink>
             </li>
             <li>
-              <NavLink
-                to="/my-trips"
-                onClick={onClose}
-                className={({ isActive }) =>
-                  `block py-2 text-lg ${
-                    isActive ? 'text-primary font-semibold' : 'text-gray-700'
-                  }`
-                }
+              <a
+                href="/my-trips"
+                onClick={handleMyTripsClick}
+                className="block py-2 text-lg text-gray-700 hover:text-primary"
               >
                 My Trips
-              </NavLink>
+              </a>
             </li>
             <li>
               <NavLink

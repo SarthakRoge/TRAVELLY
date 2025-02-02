@@ -35,6 +35,16 @@ const Navbar = () => {
     }
   };
 
+  const handleMyTripsClick = (e) => {
+    e.preventDefault();
+    if (!user) {
+      toast.error('Please sign in to view your trips');
+      navigate('/signin');
+      return;
+    }
+    navigate('/my-trips');
+  };
+
   return (
     <nav className="fixed top-0 w-full bg-white shadow-md z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -45,7 +55,13 @@ const Navbar = () => {
           
           <div className="hidden md:flex flex-1 justify-center space-x-8">
             <NavLink to="/">Home</NavLink>
-            <NavLink to="/my-trips">My Trips</NavLink>
+            <a
+              href="/my-trips"
+              onClick={handleMyTripsClick}
+              className="text-gray-700 hover:text-primary transition-colors"
+            >
+              My Trips
+            </a>
             <NavLink to="/blog">Blog</NavLink>
             <NavLink to="/contact">Contact Us</NavLink>
           </div>
