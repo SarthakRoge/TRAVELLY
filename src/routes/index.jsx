@@ -8,8 +8,9 @@ import SignInForm from '../components/auth/SignInForm';
 import SignUpForm from '../components/auth/SignUpForm';
 import ForgotPassword from '../components/auth/ForgotPassword';
 import CreateItineraryPage from '../pages/CreateItineraryPage';
-import ViewTrip from '../view-trip/[tripId]';
+
 import { AuthProvider } from '../contexts/AuthContext';
+import ViewTrip from '../view-trip/[tripId]/Index';
 
 const router = createBrowserRouter([
   {
@@ -30,7 +31,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'view-trip/:tripId',
-        element: <ViewTrip />,
+        element: <ViewTrip/>,
       },
       {
         path: 'blog',
