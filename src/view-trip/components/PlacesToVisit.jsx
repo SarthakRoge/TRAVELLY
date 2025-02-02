@@ -1,6 +1,8 @@
 import React from 'react';
 import PlaceCarditem from './PlaceCardItem';
 
+
+
 function PlacesToVisit({ trip }) {
   return (
     <div>
@@ -12,7 +14,8 @@ function PlacesToVisit({ trip }) {
             <div className='grid md:grid-cols-2 gap-5'>
               {item.places.map((place, placeIndex) => (
                 <div key={placeIndex} className='my-3'>
-                  <PlaceCarditem place={place} />
+                  <PlaceCarditem place={place}/>
+                  
                 </div>
               ))}
             </div>
