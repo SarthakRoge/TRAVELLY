@@ -1,10 +1,6 @@
-import React from 'react';
-import PlaceCarditem from './PlaceCardItem';
+import React from 'react'
 
-
-
-
-function PlacesToVisit({ trip }) {
+function PlaceToVisit() {
   return (
     <div>
       <h2 className="font-bold text-xl mt-5 mb-5">Places to Visit</h2>
@@ -25,7 +21,7 @@ function PlacesToVisit({ trip }) {
         ))}
       </div>
     </div>
-  );
+  )
 }
 
-export default PlacesToVisit;
+export default PlaceToVisit

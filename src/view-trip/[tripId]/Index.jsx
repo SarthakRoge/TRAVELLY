@@ -5,10 +5,11 @@ import { db } from '../../config/firebase';
 import { toast } from 'react-hot-toast';
 import InfoSection from '../components/InfoSection';
 import Hotels from '../components/Hotels';
-import PlacesToVisit from '../components/PlacesToVisit';
+
 import { motion } from 'framer-motion';
 import { FaSave, FaTimes } from 'react-icons/fa';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+import PlaceToVisit from '../components/PlaceToVisit';
 
 function ViewTrip() {
   const { tripId } = useParams();
@@ -118,7 +119,7 @@ function ViewTrip() {
         </div>
 
         <div className="bg-white rounded-xl shadow-lg p-6">
-          <PlacesToVisit trip={trip} />
+          <PlaceToVisit trip={trip}/>
         </div>
       </div>
     </div>
