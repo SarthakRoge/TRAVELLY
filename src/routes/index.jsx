@@ -8,12 +8,13 @@ import SignInForm from '../components/auth/SignInForm';
 import SignUpForm from '../components/auth/SignUpForm';
 import ForgotPassword from '../components/auth/ForgotPassword';
 import CreateItineraryPage from '../pages/CreateItineraryPage';
-import ViewTrip from '../view-trip/[tripId]';
+
 
 import DiscoverPage from '../pages/DiscoverPage';
 
 import { AuthProvider } from '../contexts/AuthContext';
 import ViewPlace from '../view-place/[AIplaceId]';
+import ViewTrip from '../view-trip/[tripId]/Index';
 
 
 const router = createBrowserRouter([
