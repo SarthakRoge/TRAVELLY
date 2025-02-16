@@ -64,6 +64,19 @@ const MobileMenu = ({ isOpen, onClose, user, onSignOut }) => {
               </NavLink>
             </li>
             <li>
+              <NavLink
+                to="/discover"
+                onClick={onClose}
+                className={({ isActive }) =>
+                  `block py-2 text-lg ${
+                    isActive ? 'text-primary font-semibold' : 'text-gray-700'
+                  }`
+                }
+              >
+                Discover
+              </NavLink>
+            </li>
+            <li>
               <a
                 href="/my-trips"
                 onClick={handleMyTripsClick}

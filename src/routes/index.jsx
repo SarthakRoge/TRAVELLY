@@ -8,9 +8,13 @@ import SignInForm from '../components/auth/SignInForm';
 import SignUpForm from '../components/auth/SignUpForm';
 import ForgotPassword from '../components/auth/ForgotPassword';
 import CreateItineraryPage from '../pages/CreateItineraryPage';
+import ViewTrip from '../view-trip/[tripId]';
+
+import DiscoverPage from '../pages/DiscoverPage';
 
 import { AuthProvider } from '../contexts/AuthContext';
-import ViewTrip from '../view-trip/[tripId]/Index';
+import ViewPlace from '../view-place/[AIplaceId]';
+
 
 const router = createBrowserRouter([
   {
@@ -21,44 +25,20 @@ const router = createBrowserRouter([
       </AuthProvider>
     ),
     children: [
-      {
-        index: true,
-        element: <HomePage />,
-      },
-      {
-        path: 'my-trips',
-        element: <MyTripsPage />,
-      },
-      {
-        path: 'view-trip/:tripId',
-        element: <ViewTrip/>,
-      },
-      {
-        path: 'blog',
-        element: <BlogPage />,
-      },
-      {
-        path: 'contact',
-        element: <ContactPage />,
-      },
-      {
-        path: 'signin',
-        element: <SignInForm />,
-      },
-      {
-        path: 'signup',
-        element: <SignUpForm />,
-      },
-      {
-        path: 'forgot-password',
-        element: <ForgotPassword />,
-      },
-      {
-        path: 'create-itinerary',
-        element: <CreateItineraryPage />,
-      },
+      { index: true, element: <HomePage /> },
+      { path: 'my-trips', element: <MyTripsPage /> },
+      { path: 'view-trip/:tripId', element: <ViewTrip /> },
+      { path: 'view-place/:AIplaceId', element: < ViewPlace/> },
+      { path: 'blog', element: <BlogPage /> },
+      { path: 'contact', element: <ContactPage /> },
+      { path: 'signin', element: <SignInForm /> },
+      { path: 'signup', element: <SignUpForm /> },
+      { path: 'forgot-password', element: <ForgotPassword /> },
+      { path: 'create-itinerary', element: <CreateItineraryPage /> },
+      { path: 'discover', element: <DiscoverPage /> },
+      
     ],
   },
 ]);
 
-export { router };
+export { router }

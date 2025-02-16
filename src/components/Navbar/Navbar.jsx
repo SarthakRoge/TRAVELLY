@@ -55,6 +55,7 @@ const Navbar = () => {
           
           <div className="hidden md:flex flex-1 justify-center space-x-8">
             <NavLink to="/">Home</NavLink>
+            <NavLink to="/discover">Discover</NavLink>
             <a
               href="/my-trips"
               onClick={handleMyTripsClick}
@@ -63,6 +64,7 @@ const Navbar = () => {
               My Trips
             </a>
             <NavLink to="/blog">Blog</NavLink>
+            
             <NavLink to="/contact">Contact Us</NavLink>
           </div>
 
