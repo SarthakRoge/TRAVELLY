@@ -15,6 +15,7 @@ import DiscoverPage from '../pages/DiscoverPage';
 import { AuthProvider } from '../contexts/AuthContext';
 import ViewPlace from '../view-place/[AIplaceId]';
 import ViewTrip from '../view-trip/[tripId]/Index';
+import SubscriptionPage from '../pages/SubscriptionPage';
 
 
 const router = createBrowserRouter([
@@ -37,7 +38,7 @@ const router = createBrowserRouter([
       { path: 'forgot-password', element: <ForgotPassword /> },
       { path: 'create-itinerary', element: <CreateItineraryPage /> },
       { path: 'discover', element: <DiscoverPage /> },
-      
+      { path: 'subscription', element: <SubscriptionPage /> }
     ],
   },
 ]);
