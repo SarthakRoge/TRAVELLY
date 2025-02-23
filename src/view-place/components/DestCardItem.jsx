@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { GetPlaceDetails, PHOTO_REF_URL } from '../../services/GlobalApi';
+import { motion } from 'framer-motion';
+import { FaMapMarkerAlt, FaExternalLinkAlt, FaBookmark } from 'react-icons/fa';
 
 function DestCardItem({dest}) {
 
     const [PhotoUrl, setPhotoUrl] = useState();
+    const [isSaved, setIsSaved] = useState(false);
     useEffect(() => {
         dest && GetphotoPlace();
       }, [dest]);
@@ -23,19 +26,33 @@ function DestCardItem({dest}) {
             console.error('Error fetching photo:', error);
         }
     };
+    
 
 
 
     return (
+        <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        whileHover={{ scale: 1.02 }}
+        className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all"
+      >
         <div>
         
-            <img src={PhotoUrl} className='rounded-xl'/>
-            <div >
-                <h2>{dest?.name}</h2>
-                <h2>{dest?.description}</h2>
+        <img 
+          src={PhotoUrl || '/Phaolder.jpg'} 
+          className="h-64 w-full object-cover"
+          alt={dest?.name}
+        />
+            <div className="p-4">
+                <h2 className="text-2xl font-bold text-black mb-2">{dest?.name}</h2>
+                </div>
+                <div className="p-4">
+                <p className="text-gray-600 leading-relaxed mb-4">{dest?.description}</p>
             </div>
                     
         </div>
+        </motion.div>
     )
 }
 

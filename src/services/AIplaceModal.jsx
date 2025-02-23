@@ -8,34 +8,34 @@ const model = genAI.getGenerativeModel({
 });
 
 const generationConfig = {
-    temperature: 1,
-    topP: 0.95,
-    topK: 40,
-    maxOutputTokens: 8192,
-    responseMimeType: "text/plain",
-  };
-  
-  async function run() {
-    const chatSession = model.startChat({
-      generationConfig,
-      history: [
-        {
-          role: "user",
-          parts: [
-            {text: "\"Suggest the 4 best travel destinations worldwide for May month based on the following preferences: Mountain Escape,climate: Cold and Snowy ,activities :Photography and popularity:Hidden Gems. Provide the places list with name, a short 2 line description, and an image URL for each destination in JSON format.\"\n"},
-          ],
-        },
-        {
-          role: "model",
-          parts: [
-            {text: "```json\n{\n  \"destinations\": [\n    {\n      \"name\": \"Aoraki/Mount Cook National Park, New Zealand\",\n      \"description\": \"Majestic alpine scenery dominated by New Zealand's highest peak. May offers quieter trails and stunning snow-capped vistas perfect for photography.\",\n      \"image_url\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Mount_Cook_Lake_Pukaki.jpg/1280px-Mount_Cook_Lake_Pukaki.jpg\"\n    },\n    {\n      \"name\": \"Hokkaido, Japan\",\n      \"description\": \"Vast landscapes covered in snow and pristine forests. May is the last time to experience the area in its snow covered state, offering unique photo opportunities with fewer crowds.\",\n      \"image_url\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Shiretoko_Peninsula_Winter.jpg/1280px-Shiretoko_Peninsula_Winter.jpg\"\n    },\n    {\n      \"name\": \"Jasper National Park, Canada\",\n      \"description\": \"Less crowded than Banff, Jasper boasts equally impressive Canadian Rockies scenery. May can still offer snow-capped peaks and wildlife viewing opportunities.\",\n      \"image_url\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Maligne_Lake_%28Jasper_National_Park%2C_Alberta%2C_Canada%29.jpg/1280px-Maligne_Lake_%28Jasper_National_Park%2C_Alberta%2C_Canada%29.jpg\"\n    },\n    {\n      \"name\": \"Troms, Norway\",\n      \"description\": \"A stunning arctic region, the last of the snow-covered areas can be found in May. Experience the transition from winter to summer in this unique and beautiful place.\",\n      \"image_url\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Troms%C3%B8_panorama_%285311841786%29.jpg/1280px-Troms%C3%B8_panorama_%285311841786%29.jpg\"\n    }\n  ]\n}\n```"},
-          ],
-        },
-      ],
-    });
-  
-    const result = await chatSession.sendMessage("INSERT_INPUT_HERE");
-    console.log(result.response.text());
-  }
-  
-  run();
+  temperature: 1,
+  topP: 0.95,
+  topK: 40,
+  maxOutputTokens: 8192,
+  responseMimeType: "text/plain",
+};
+
+async function run() {
+  const chatSession = model.startChat({
+    generationConfig,
+    history: [
+      {
+        role: "user",
+        parts: [
+          {text: "Suggest the 6 best travel destinations worldwide for May month based on the following preferences: Mountain Escape, continent:Europe ,activities :Photography and popularity:Hidden Gems. Provide the places list with name, a short 2 line description, and an image URL for each destination in JSON format."},
+        ],
+      },
+      {
+        role: "model",
+        parts: [
+          {text: "Okay, here's a JSON object containing 6 suggestions for hidden gem mountain escapes in Europe that are excellent for photography in May, along with a brief description and an image URL.  I've focused on places that offer stunning scenery and are relatively less crowded than some of the major tourist hotspots.\n\n```json\n[\n  {\n    \"name\": \"Julian Alps, Slovenia\",\n    \"description\": \"Emerald lakes, soaring peaks, and charming villages make the Julian Alps a photographer's dream. May offers pleasant weather for hiking and capturing the landscape before the summer crowds arrive.\",\n    \"image_url\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Triglav_North_Face_from_Vrata_valley.jpg/1280px-Triglav_North_Face_from_Vrata_valley.jpg\"\n  },\n  {\n    \"name\": \"Dolomites, Italy (Less Known Areas)\",\n    \"description\": \"While popular, explore the Dolomites beyond the main resorts. Areas like the Pale di San Martino or the Brenta Dolomites offer equally stunning scenery with fewer tourists in May, perfect for landscape photography.\",\n    \"image_url\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Pale_di_San_Martino_Panorama.jpg/1280px-Pale_di_San_Martino_Panorama.jpg\"\n  },\n  {\n    \"name\": \"Picos de Europa, Spain\",\n    \"description\": \"Dramatic limestone peaks, lush green valleys, and picturesque villages characterize the Picos de Europa. May is ideal for hiking and photographing the wildflowers and mountain views before the summer heat.\",\n    \"image_url\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Picos_de_Europa_Fuente_De_Cablecar.jpg/1280px-Picos_de_Europa_Fuente_De_Cablecar.jpg\"\n  },\n  {\n    \"name\": \"Retezat Mountains, Romania\",\n    \"description\": \"Known as the 'Romanian Alps,' the Retezat Mountains offer pristine glacial lakes, rugged peaks, and diverse flora and fauna. May is a good time to visit before the higher elevation trails are completely clear of snow, offering unique photo opportunities.\",\n    \"image_url\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Taul_Portii%2C_Mun%C8%9Bii_Retezat.jpg/1280px-Taul_Portii%2C_Mun%C8%9Bii_Retezat.jpg\"\n  },\n  {\n    \"name\": \"High Tatras, Slovakia/Poland\",\n    \"description\": \"These majestic mountains offer stunning alpine scenery, challenging hiking trails, and charming mountain huts. May brings blooming wildflowers and clearer skies, providing excellent conditions for photography.\",\n    \"image_url\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Slovakia_High_Tatras_Popradske_pleso.jpg/1280px-Slovakia_High_Tatras_Popradske_pleso.jpg\"\n  },\n  {\n    \"name\": \"Scottish Highlands, Scotland (Western Isles)\",\n    \"description\": \"While parts of the Highlands are well-known, explore the Western Isles. May boasts longer daylight hours and fewer midges compared to later in the summer, perfect for capturing dramatic coastal and mountain landscapes.\",\n    \"image_url\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Luskentyre_Beach_sunset_Harris.jpg/1280px-Luskentyre_Beach_sunset_Harris.jpg\"\n  }\n]\n```\n\n**Important Notes about the Image URLs:**\n\n*   **Image Rights:**  These URLs are for images on Wikimedia Commons, which generally have licenses that allow for free use. However, *always* double-check the specific license for any image before using it for any commercial purpose.  If you're using the images for a personal project, you're likely fine, but verifying the license is good practice.\n*   **Image Quality and Availability:**  The images are chosen to be representative and of reasonable quality. Image availability on the internet can change, so these links may not be permanent.\n*   **Alternative Image Sources:** Consider using stock photography sites like Unsplash, Pexels, or Pixabay for higher-resolution and guaranteed-available images, though attribution may be required depending on the license.\n\nThis list provides a diverse range of European mountain destinations that offer beautiful scenery, opportunities for photography, and relative peace and quiet in the month of May. Remember to check local weather conditions and trail accessibility before you go.\n"},
+        ],
+      },
+    ],
+  });
+
+  const result = await chatSession.sendMessage("INSERT_INPUT_HERE");
+  console.log(result.response.text());
+}
+
+run();

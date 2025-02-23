@@ -7,7 +7,7 @@ import {
   Snowflake, Cloud, MapPin, Compass, Map, 
   ArrowLeft, Landmark, Bird, Space as Spa, Umbrella,
   Tent, Palmtree as Palm, Mountain as MountainIcon, Plane,
-  Flower, Leaf, Wind
+  Flower, Leaf, Globe, Wind
 } from 'lucide-react';
 import { chatSession } from '../../services/AIModal';
 import { db } from '../../config/firebase';
@@ -44,14 +44,17 @@ const questions = [
     ]
   },
   {
-    id: 'climate',
-    title: 'What is your preferred travel climate?',
-    subtitle: 'Select the weather conditions that make your journey perfect',
+    id: 'continent',
+    title: 'Which continent would you like to visit?',
+    subtitle: 'Select your preferred region for exploration',
     options: [
-      { id: 'Tropical Warm', label: 'Tropical Warm', icon: Sun, description: 'Hot and sunny with beach-perfect weather' },
-      { id: 'Cold & Snowy', label: 'Cold & Snowy', icon: Snowflake, description: 'Winter wonderland with snow activities' },
-      { id: 'Moderate & Mild', label: 'Moderate & Mild', icon: Cloud, description: 'Pleasant temperatures for outdoor activities' },
-      { id: 'Mediterranean', label: 'Mediterranean', icon: Wine, description: 'Warm days and cool evenings' }
+      { id: 'Asia', label: 'Asia', icon: Globe, description: 'Ancient traditions meet modern marvels' },
+      { id: 'Europe', label: 'Europe', icon: Globe, description: 'Rich history and cultural heritage' },
+      { id: 'North America', label: 'North America', icon: Globe, description: 'Diverse landscapes and vibrant cities' },
+      { id: 'South America', label: 'South America', icon: Globe, description: 'Natural wonders and ancient civilizations' },
+      { id: 'Africa', label: 'Africa', icon: Globe, description: 'Wildlife and breathtaking landscapes' },
+      { id: 'Oceania', label: 'Oceania', icon: Globe, description: 'Island paradises and unique wildlife' },
+      { id: 'Antarctica', label: 'Antarctica', icon: Globe, description: 'Pristine wilderness and polar adventures' }
     ]
   },
   {
@@ -61,8 +64,6 @@ const questions = [
     options: [
       { id: 'Tourist Spots', label: 'Popular Spots', icon: MapPin, description: 'Well-known destinations with established attractions' },
       { id: 'Hidden-Gem', label: 'Hidden Gems', icon: Compass, description: 'Off-the-beaten-path locations with unique experiences' },
-      { id: 'Tourist Spots & Hidden-Gem', label: 'Best of Both', icon: Map, description: 'A mix of popular attractions and local secrets' },
-      { id: 'authentiAuthentic Local Culture', label: 'Local Experience', icon: Tent, description: 'Authentic local culture away from tourist crowds' }
     ]
   },
   {
@@ -86,7 +87,7 @@ const questions = [
   }
 ];
 
-const AIplacePrompt = "Suggest the 4 best travel destinations worldwide for {month} month based on the following preferences: {destination}, climate: {climate}, activities: {activities} and popularity: {popularity}. Provide the places list with name, a short 2 line description, and an image URL for each destination in JSON format.";
+const AIplacePrompt = "Suggest the 6 best travel destinations worldwide for {month} month based on the following preferences: {destination}, continent: {continent}, activities: {activities} and popularity: {popularity}. Provide the places list with name, a short 2 line description, and an image URL for each destination in JSON format.";
 
 const DiscoveryPage = () => {
   const navigate = useNavigate();
@@ -118,7 +119,7 @@ const DiscoveryPage = () => {
       const prompt = AIplacePrompt
         .replace('{month}', selections.month)
         .replace('{destination}', selections.destination)
-        .replace('{climate}', selections.climate)
+        .replace('{continent}', selections.continent)
         .replace('{activities}', selections.activities)
         .replace('{popularity}', selections.popularity);
 

@@ -41,17 +41,32 @@ function ViewPlace() {
         setLoading(false);
       }
     };
+    if (loading) {
+      return (
+        <div className="pt-24 pb-12 min-h-screen bg-gray-50 flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent"></div>
+        </div>
+      );
+    }
   
    
   
     return (
       <div className="pt-24 pb-12 min-h-screen bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.button
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          onClick={() => navigate('/discover')}
+          className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-8 group"
+        >
+          <FaArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+          <span>Back to Discovery</span>
+        </motion.button>
 
-            {/*Destination */}
-            <Destination placeData={placeData}/>
-        </div>
+        <Destination placeData={placeData} />
       </div>
+    </div>
     );
   }
   
