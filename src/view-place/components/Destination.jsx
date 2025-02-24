@@ -1,14 +1,19 @@
 import React, { useEffect } from 'react'
 
-import DestCardItem from './DestCardItem';
+
 import { motion } from 'framer-motion';
 import { FaCompass, FaMapMarkedAlt } from 'react-icons/fa';
+import DestCard from './DestCard';
+
 
 function Destination({placeData}) {
 
 
     return (
-        <div className="space-y-8">
+        
+      
+
+      <div className="space-y-8">
       <div className="text-center max-w-3xl mx-auto mb-12">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -33,12 +38,12 @@ function Destination({placeData}) {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {placeData?.places?.destinations?.map((dest,index)=>(
-                <DestCardItem dest={dest}/>
+            {placeData?.places?.travelDestinations?.map((dest,index)=>(
+                <DestCard dest={dest}/>
             ))}
       </div>
 
-      {placeData?.places?.destinations?.length === 0 && (
+      {placeData?.places?.travelDestinations?.length === 0 && (
         <div className="text-center py-12">
           <div className="p-3 bg-gray-100 rounded-full inline-block mb-4">
             <FaMapMarkedAlt className="w-8 h-8 text-gray-400" />
@@ -52,6 +57,7 @@ function Destination({placeData}) {
         </div>
       )}
     </div>
+      
     )
 }
 

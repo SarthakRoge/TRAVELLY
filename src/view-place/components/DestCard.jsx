@@ -3,35 +3,34 @@ import { GetPlaceDetails, PHOTO_REF_URL } from '../../services/GlobalApi';
 import { motion } from 'framer-motion';
 import { FaMapMarkerAlt, FaExternalLinkAlt, FaBookmark } from 'react-icons/fa';
 
-function DestCardItem({dest}) {
+function DestCard({dest}) {
 
     const [PhotoUrl, setPhotoUrl] = useState();
-    const [isSaved, setIsSaved] = useState(false);
-    useEffect(() => {
-        dest && GetphotoPlace();
-      }, [dest]);
-
-    const GetphotoPlace=async()=>{
-        try{
-            const data={
-                textQuery:dest?.name
-            }
-            
-            const result = await GetPlaceDetails(data);
-            console.log(result)
-            const PhotoUrl = PHOTO_REF_URL.replace('{NAME}', result.data.places[0].photos[3].name);
-            setPhotoUrl(PhotoUrl);
-        }
-        catch(error){
-            console.error('Error fetching photo:', error);
-        }
-    };
+        
+        useEffect(() => {
+            dest && GetphotoPlace();
+          }, [dest]);
     
+        const GetphotoPlace=async()=>{
+            try{
+                const data={
+                    textQuery:dest?.name
+                }
+                
+                const result = await GetPlaceDetails(data);
+                console.log(result)
+                const PhotoUrl = PHOTO_REF_URL.replace('{NAME}', result.data.places[0].photos[3].name);
+                setPhotoUrl(PhotoUrl);
+            }
+            catch(error){
+                console.error('Error fetching photo:', error);
+            }
+        };
 
 
 
-    return (
-        <motion.div
+  return (
+    <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         whileHover={{ scale: 1.02 }}
@@ -53,7 +52,7 @@ function DestCardItem({dest}) {
                     
         </div>
         </motion.div>
-    )
+  )
 }
 
-export default DestCardItem
+export default DestCard

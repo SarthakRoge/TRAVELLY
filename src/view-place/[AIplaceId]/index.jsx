@@ -9,6 +9,8 @@ import { db } from '../../config/firebase';
 import Destination from '../components/Destination';
 
 
+
+
 function ViewPlace() {
     const { AIplaceId } = useParams();
     const navigate = useNavigate();
@@ -48,6 +50,7 @@ function ViewPlace() {
         </div>
       );
     }
+    
   
    
   
