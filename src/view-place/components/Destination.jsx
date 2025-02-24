@@ -38,12 +38,12 @@ function Destination({placeData}) {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {placeData?.places?.travelDestinations?.map((dest,index)=>(
+            {placeData?.places?.destinations?.map((dest,index)=>(
                 <DestCard dest={dest}/>
             ))}
       </div>
 
-      {placeData?.places?.travelDestinations?.length === 0 && (
+      {placeData?.places?.destinations?.length === 0 && (
         <div className="text-center py-12">
           <div className="p-3 bg-gray-100 rounded-full inline-block mb-4">
             <FaMapMarkedAlt className="w-8 h-8 text-gray-400" />
