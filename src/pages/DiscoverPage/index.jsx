@@ -87,7 +87,7 @@ const questions = [
   }
 ];
 
-const AIplacePrompt = "Suggest the 6 best travel destinations worldwide for {month} month based on the following preferences: {destination}, continent: {continent}, activities: {activities} and popularity: {popularity}. Provide the places list with name, a short 2 line description, and an image URL for each destination in JSON format.";
+const AIplacePrompt = "Suggest the 6 best destinations list for {month} month based on the following preferences: {destination}, continent: {continent}, activities: {activities} and popularity: {popularity}. Provide the places list with name, a short 2 line description, and an image URL for each destination in JSON format.";
 
 const DiscoveryPage = () => {
   const navigate = useNavigate();
