@@ -13,6 +13,7 @@ import { chatSession } from '../../services/AIModal';
 import { db } from '../../config/firebase';
 import { collection, addDoc } from 'firebase/firestore';
 import { toast } from 'react-hot-toast';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 const questions = [
   {
@@ -145,6 +146,40 @@ const DiscoveryPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#E6FFF9] to-[#F0FFF9]">
+      <AnimatePresence>
+        {loading && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center"
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              className="bg-white p-12 rounded-2xl shadow-2xl text-center max-w-[600px]"
+            >
+              <div className="w-full max-w-[300px] sm:max-w-[400px] md:max-w-[500px] mx-auto mb-8">
+                <DotLottieReact
+                  src="https://lottie.host/bfbdceec-736e-4c7f-bd68-50b855968cd3/MzmydP4Z01.lottie"
+                  speed="0.5"
+                  style={{ width: "100%", height: "100%" }}
+                  loop
+                  autoplay
+                />
+              </div>
+      
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                Finding Your Perfect Destination
+              </h2>
+              <p className="text-lg text-gray-600">
+                Please wait while we are finding your next adventure...
+              </p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="flex items-center justify-between mb-12">
           <button
@@ -238,7 +273,9 @@ const DiscoveryPage = () => {
               animate={{ opacity: 1, y: 0 }}
               className="mt-12 text-center"
             >
-              <button
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={generatePlaces}
                 disabled={loading}
                 className={`
@@ -248,7 +285,7 @@ const DiscoveryPage = () => {
                 `}
               >
                 {loading ? 'Generating Places...' : 'Find My Perfect Destination'}
-              </button>
+              </motion.button>
             </motion.div>
           )}
         </div>

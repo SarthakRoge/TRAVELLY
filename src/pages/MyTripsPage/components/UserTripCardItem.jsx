@@ -3,13 +3,17 @@ import { Link } from 'react-router-dom';
 import { deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../../../config/firebase';
 import { GetPlaceDetails, PHOTO_REF_URL } from '../../../services/GlobalApi';
-import { FaTrash } from 'react-icons/fa';
+import { FaTrash, FaShare, FaDownload, FaEllipsisV } from 'react-icons/fa';
 import { toast } from 'react-hot-toast';
 import { motion } from 'framer-motion';
+import { generatePDF } from '../../../utils/pdfGenerator';
+
 
 function UserTripCardItem({ trip, onDelete }) {
   const [photoUrl, setPhotoUrl] = useState();
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     trip && GetPlacePhoto();
@@ -48,12 +52,63 @@ function UserTripCardItem({ trip, onDelete }) {
     }
   };
 
+  const handleShare = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    setIsDownloading(true);
+    toast.loading('Generating PDF...');
+    
+    try {
+      const pdfBlob = await generatePDF(trip, photoUrl);
+      const fileUrl = URL.createObjectURL(pdfBlob);
+      
+      const emailSubject = encodeURIComponent(`Travel Itinerary: ${trip?.userSelection?.location?.label}`);
+      const emailBody = encodeURIComponent(`Check out my travel itinerary for ${trip?.userSelection?.location?.label}! Here is the itinerary PDF: ${fileUrl}`);
+      const whatsappMessage = encodeURIComponent(`Check out my travel itinerary for ${trip?.userSelection?.location?.label}! Here is the itinerary PDF: ${fileUrl}`);
+      
+      const mailtoLink = `mailto:?subject=${emailSubject}&body=${emailBody}`;
+      const whatsappLink = `https://wa.me/?text=${whatsappMessage}`;
+      
+      window.open(mailtoLink, '_blank');
+      window.open(whatsappLink, '_blank');
+      
+      toast.success('PDF ready to be shared');
+    } catch (error) {
+      console.error('Error sharing itinerary:', error);
+      toast.error('Failed to share itinerary');
+    } finally {
+      toast.dismiss();
+      setIsDownloading(false);
+    }
+  };
+
+  const handleDownload = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    setIsDownloading(true);
+    toast.loading('Downloaging PDF...');
+    
+    try {
+      await generatePDF(trip, photoUrl);
+      toast.dismiss();
+      toast.success('Itinerary PDF downloaded successfully');
+    } catch (error) {
+      console.error('Error downloading itinerary:', error);
+      toast.dismiss();
+      toast.error('Failed to download itinerary');
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
-      className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
+      className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 relative"
     >
       <Link to={'/view-trip/' + trip.id}>
         <div className="relative">
@@ -68,30 +123,32 @@ function UserTripCardItem({ trip, onDelete }) {
           <h2 className="font-bold text-xl text-gray-800 mb-2">
             {trip?.userSelection?.location?.label}
           </h2>
-          <div className="space-y-2">
-            <div className="flex flex-wrap gap-2">
-              <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">
-                {trip?.userSelection?.noOfDays} Days
-              </span>
-              <span className="px-3 py-1 bg-secondary/10 text-secondary rounded-full text-sm">
-                {trip?.userSelection?.budget} Budget
-              </span>
-              <span className="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm">
-                {trip?.userSelection?.traveler}
-              </span>
-            </div>
-          </div>
         </div>
       </Link>
-      <div className="px-5 pb-4 flex justify-end">
-        <button
-          onClick={handleDelete}
-          disabled={isDeleting}
-          className="flex items-center gap-2 px-4 py-2 text-red-500 hover:text-red-700 transition-colors"
+      
+      <div className="absolute top-2 right-2">
+        <button 
+          className="p-2 bg-gray-200 rounded-full hover:bg-gray-300" 
+          onClick={(e) => {
+            e.stopPropagation();
+            setMenuOpen(!menuOpen);
+          }}
         >
-          <FaTrash className="w-4 h-4" />
-          {isDeleting ? 'Deleting...' : 'Delete'}
+          <FaEllipsisV className="text-gray-600" />
         </button>
+        {menuOpen && (
+          <div className="absolute right-0 mt-2 bg-white shadow-lg rounded-lg w-32 overflow-hidden">
+            <button onClick={handleDownload} className="flex items-center gap-2 px-4 py-2 w-full text-primary hover:bg-gray-100">
+              <FaDownload className="w-4 h-4" /> Download
+            </button>
+            <button onClick={handleShare} className="flex items-center gap-2 px-4 py-2 w-full text-secondary hover:bg-gray-100">
+              <FaShare className="w-4 h-4" /> Share
+            </button>
+            <button onClick={handleDelete} className="flex items-center gap-2 px-4 py-2 w-full text-red-500 hover:bg-gray-100">
+              <FaTrash className="w-4 h-4" /> Delete
+            </button>
+          </div>
+        )}
       </div>
     </motion.div>
   );
