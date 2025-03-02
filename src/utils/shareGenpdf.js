@@ -192,19 +192,7 @@ export const sharePDF = async (trip, mainPhotoUrl) => {
       yPos += 5;
       doc.text(`Travel time: ${place.timeToTravel}`, margin + 10, yPos);
       yPos += 10;
-      
-      // Try to add place image if available
-      if (place.imageUrl) {
-        try {
-          const imageHeight = 30;
-          const imageAdded = await addImageFromUrl(doc, place.imageUrl, margin + 10, yPos, contentWidth - 20, imageHeight);
-          if (imageAdded) {
-            yPos += imageHeight + 5;
-          }
-        } catch (error) {
-          console.error('Error adding place image:', error);
-        }
-      }
+
     }
     
     yPos += 5;

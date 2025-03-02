@@ -62,7 +62,6 @@ function UserTripCardItem({ trip, onDelete }) {
     
     try {
       const pdfBlob = await sharePDF(trip, photoUrl);
-  
       
       // Create a file from the blob
       const file = new File([pdfBlob], `${trip?.userSelection?.location?.label.replace(/\s+/g, '_')}_Itinerary.pdf`, { 
