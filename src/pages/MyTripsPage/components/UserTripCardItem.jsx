@@ -7,6 +7,7 @@ import { FaTrash, FaShare, FaDownload, FaEllipsisV } from 'react-icons/fa';
 import { toast } from 'react-hot-toast';
 import { motion } from 'framer-motion';
 import { generatePDF } from '../../../utils/pdfGenerator';
+import { sharePDF } from '../../../utils/shareGenpdf';
 
 
 function UserTripCardItem({ trip, onDelete }) {
@@ -57,23 +58,78 @@ function UserTripCardItem({ trip, onDelete }) {
     e.stopPropagation();
     
     setIsDownloading(true);
-    toast.loading('Generating PDF...');
+    toast.loading('Generating PDF for sharing...');
     
     try {
-      const pdfBlob = await generatePDF(trip, photoUrl);
-      const fileUrl = URL.createObjectURL(pdfBlob);
+      const pdfBlob = await sharePDF(trip, photoUrl);
+  
       
-      const emailSubject = encodeURIComponent(`Travel Itinerary: ${trip?.userSelection?.location?.label}`);
-      const emailBody = encodeURIComponent(`Check out my travel itinerary for ${trip?.userSelection?.location?.label}! Here is the itinerary PDF: ${fileUrl}`);
-      const whatsappMessage = encodeURIComponent(`Check out my travel itinerary for ${trip?.userSelection?.location?.label}! Here is the itinerary PDF: ${fileUrl}`);
+      // Create a file from the blob
+      const file = new File([pdfBlob], `${trip?.userSelection?.location?.label.replace(/\s+/g, '_')}_Itinerary.pdf`, { 
+        type: 'application/pdf' 
+      });
       
-      const mailtoLink = `mailto:?subject=${emailSubject}&body=${emailBody}`;
-      const whatsappLink = `https://wa.me/?text=${whatsappMessage}`;
-      
-      window.open(mailtoLink, '_blank');
-      window.open(whatsappLink, '_blank');
-      
-      toast.success('PDF ready to be shared');
+      // Check if Web Share API is supported and can share files
+      if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          files: [file],
+          title: `Travel Itinerary: ${trip?.userSelection?.location?.label}`,
+          text: `Check out my travel itinerary for ${trip?.userSelection?.location?.label}!`,
+        });
+        toast.success('Itinerary shared successfully');
+      } else {
+        // Fallback for browsers that don't support sharing files
+        const url = URL.createObjectURL(pdfBlob);
+        
+        // Create sharing links
+        const emailSubject = encodeURIComponent(`Travel Itinerary: ${trip?.userSelection?.location?.label}`);
+        const emailBody = encodeURIComponent(`Check out my travel itinerary for ${trip?.userSelection?.location?.label}!`);
+        const emailLink = `mailto:?subject=${emailSubject}&body=${emailBody}`;
+        
+        const whatsappText = encodeURIComponent(`Check out my travel itinerary for ${trip?.userSelection?.location?.label}!`);
+        const whatsappLink = `https://wa.me/?text=${whatsappText}`;
+        
+        // Create a modal for sharing options
+        const modal = document.createElement('div');
+        modal.style.position = 'fixed';
+        modal.style.top = '0';
+        modal.style.left = '0';
+        modal.style.width = '100%';
+        modal.style.height = '100%';
+        modal.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+        modal.style.display = 'flex';
+        modal.style.justifyContent = 'center';
+        modal.style.alignItems = 'center';
+        modal.style.zIndex = '9999';
+        
+        const modalContent = document.createElement('div');
+        modalContent.style.backgroundColor = 'white';
+        modalContent.style.padding = '20px';
+        modalContent.style.borderRadius = '10px';
+        modalContent.style.maxWidth = '400px';
+        modalContent.style.width = '90%';
+        
+        modalContent.innerHTML = `
+          <h3 style="font-size: 18px; font-weight: bold; margin-bottom: 15px;">Share Itinerary</h3>
+          <p style="margin-bottom: 15px;">Choose how you want to share your itinerary:</p>
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <a href="${url}" download="${trip?.userSelection?.location?.label.replace(/\s+/g, '_')}_Itinerary.pdf" style="padding: 10px; background-color: #00E5BE; color: white; text-decoration: none; border-radius: 5px; text-align: center;">Download PDF</a>
+            <a href="${emailLink}" style="padding: 10px; background-color: #EA4335; color: white; text-decoration: none; border-radius: 5px; text-align: center;">Share via Email</a>
+            <a href="${whatsappLink}" target="_blank" style="padding: 10px; background-color: #25D366; color: white; text-decoration: none; border-radius: 5px; text-align: center;">Share via WhatsApp</a>
+            <button id="close-modal" style="padding: 10px; background-color: #f1f1f1; border: none; border-radius: 5px; margin-top: 10px; cursor: pointer;">Close</button>
+          </div>
+        `;
+        
+        modal.appendChild(modalContent);
+        document.body.appendChild(modal);
+        
+        document.getElementById('close-modal').addEventListener('click', () => {
+          document.body.removeChild(modal);
+          URL.revokeObjectURL(url);
+        });
+        
+        toast.success('Choose your sharing option');
+      }
     } catch (error) {
       console.error('Error sharing itinerary:', error);
       toast.error('Failed to share itinerary');
