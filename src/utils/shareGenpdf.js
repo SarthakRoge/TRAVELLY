@@ -192,7 +192,7 @@ export const sharePDF = async (trip, mainPhotoUrl) => {
       yPos += 5;
       doc.text(`Travel time: ${place.timeToTravel}`, margin + 10, yPos);
       yPos += 10;
-
+      
     }
     
     yPos += 5;
@@ -205,5 +205,6 @@ export const sharePDF = async (trip, mainPhotoUrl) => {
   doc.setTextColor(100, 100, 100);
   doc.text(footerText, pageWidth / 2, pageHeight - 10, { align: 'center' });
   
-  
+  // Return the PDF as a blob
+  return doc.output('blob');
 };

@@ -100,6 +100,19 @@ const MobileMenu = ({ isOpen, onClose, user, onSignOut }) => {
             </li>
             <li>
               <NavLink
+                to="/pricing"
+                onClick={onClose}
+                className={({ isActive }) =>
+                  `block py-2 text-lg ${
+                    isActive ? 'text-primary font-semibold' : 'text-gray-700'
+                  }`
+                }
+              >
+                Pricing
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
                 to="/contact"
                 onClick={onClose}
                 className={({ isActive }) =>

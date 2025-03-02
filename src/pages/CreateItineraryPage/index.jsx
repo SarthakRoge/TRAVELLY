@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
+import { useSubscription } from '../../contexts/SubscriptionContext';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'react-hot-toast';
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import { AI_PROMPT, SelectBudgetOptions, SelectTravelesList } from '../../constant/options';
-import { FaMapMarkerAlt, FaCalendarAlt, FaGlobeAmericas } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaCalendarAlt, FaGlobeAmericas, FaCrown } from 'react-icons/fa';
 import Button from '../../components/common/Button';
 import { chatSession } from '../../services/AIModal';
 import { doc, setDoc } from 'firebase/firestore';
@@ -14,17 +15,25 @@ import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 const CreateItineraryPage = () => {
   const { user } = useAuth();
+  const { canCreateItinerary, getRemainingItineraries, incrementItineraryCount, userPlan } = useSubscription();
   const navigate = useNavigate();
   const [place, setPlace] = useState();
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
   useEffect(() => {
     if (!user) {
       toast.error('You need to sign in to create an itinerary');
       navigate('/signin');
+      return;
     }
-  }, [user, navigate]);
+
+    // Check if user can create more itineraries
+    if (!canCreateItinerary()) {
+      setShowUpgradeModal(true);
+    }
+  }, [user, navigate, canCreateItinerary]);
 
   const handleInputChange = (name, value) => {
     if (name === 'noOfDays') {
@@ -42,6 +51,11 @@ const CreateItineraryPage = () => {
   };
 
   const onGenerateTrip = async () => {
+    if (!canCreateItinerary()) {
+      setShowUpgradeModal(true);
+      return;
+    }
+
     if (!formData?.location || !formData?.tripName || !formData?.traveler || !formData?.budget || !formData?.noOfDays) {
       toast.error('Please fill in all details');
       return;
@@ -59,6 +73,9 @@ const CreateItineraryPage = () => {
 
       const result = await chatSession.sendMessage(FINAL_PROMPT);
       await saveAiTrip(result?.response?.text());
+      
+      // Increment the itinerary count after successful creation
+      await incrementItineraryCount();
     } catch (error) {
       console.error('Error generating trip:', error);
       toast.error('Failed to generate trip');
@@ -75,6 +92,7 @@ const CreateItineraryPage = () => {
         id: docId,
         email: user.email,
         userId: user.uid,
+        createdAt: new Date()
       });
       navigate(`/view-trip/${docId}`);
     } catch (error) {
@@ -82,6 +100,10 @@ const CreateItineraryPage = () => {
       toast.error('Failed to save trip');
       setLoading(false);
     }
+  };
+
+  const handleUpgradeClick = () => {
+    navigate('/pricing');
   };
 
   return (
@@ -119,6 +141,49 @@ const CreateItineraryPage = () => {
             </motion.div>
           </motion.div>
         )}
+
+        {showUpgradeModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center"
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              className="bg-white p-8 rounded-2xl shadow-2xl text-center max-w-[500px] mx-4"
+            >
+              <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <FaCrown className="w-8 h-8 text-yellow-500" />
+              </div>
+              
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                Itinerary Limit Reached
+              </h2>
+              <p className="text-gray-600 mb-6">
+                You've reached the maximum number of itineraries allowed on your {userPlan.charAt(0).toUpperCase() + userPlan.slice(1)} plan. 
+                Upgrade your plan to create more amazing travel experiences!
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <button
+                  onClick={handleUpgradeClick}
+                  className="px-6 py-3 bg-primary text-white rounded-lg font-semibold hover:bg-primary/90 transition-colors"
+                >
+                  Upgrade Now
+                </button>
+                <button
+                  onClick={() => setShowUpgradeModal(false)}
+                  className="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition-colors"
+                >
+                  Maybe Later
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
       </AnimatePresence>
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -134,6 +199,14 @@ const CreateItineraryPage = () => {
             <p className="text-lg text-gray-600">
               Tell us your preferences, and we'll create your perfect itinerary
             </p>
+            
+            {/* Subscription info banner */}
+            <div className="mt-4 p-3 bg-gray-100 rounded-lg inline-block">
+              <p className="text-sm text-gray-700">
+                <span className="font-medium">Your plan:</span> {userPlan.charAt(0).toUpperCase() + userPlan.slice(1)} • 
+                <span className="font-medium"> Remaining itineraries:</span> {getRemainingItineraries()}
+              </p>
+            </div>
           </div>
 
           <div className="space-y-8">

@@ -1,104 +1,134 @@
-import { db } from '../config/firebase';
-import { collection, addDoc, getDocs, query, where, updateDoc, doc } from 'firebase/firestore';
-import { processRazorpayXPayment } from './razorpay';
+// Subscription service to handle subscription-related operations
 
-export const subscriptionPlans = [
-  {
-    id: 'free',
-    name: 'Free',
-    price: 0,
-    description: 'Start your journey',
-    features: ['Feature 1', 'Feature 2', 'Feature 3'],
-    duration: 30, // days
-  },
-  {
-    id: 'basic',
-    name: 'Basic',
-    price: 499,
-    description: 'Perfect for casual travelers',
-    features: ['Feature 1', 'Feature 2', 'Feature 3', 'Feature 4'],
-    duration: 30,
-  },
-  {
-    id: 'pro',
-    name: 'Pro',
-    price: 999,
-    description: 'For frequent travelers',
-    features: ['Feature 1', 'Feature 2', 'Feature 3', 'Feature 4', 'Feature 5', 'Feature 6'],
-    duration: 30,
-  },
-];
-
-export const createSubscription = async (userId, planId, paymentResponse) => {
+// Check if user has an active subscription
+export const checkSubscription = async (userId) => {
   try {
-    const plan = subscriptionPlans.find((p) => p.id === planId);
-    if (!plan) throw new Error('Invalid plan selected');
-
-    const startDate = new Date();
-    const endDate = new Date();
-    endDate.setDate(endDate.getDate() + plan.duration);
-
-    const subscriptionData = {
+    // In a real application, this would make an API call to your backend
+    // For now, we'll simulate this with a mock response
+    
+    // Mock response - in production, this would come from your database
+    const mockSubscription = {
       userId,
-      planId,
-      planName: plan.name,
+      planId: 'free', // 'free', 'basic', or 'pro'
       status: 'active',
-      startDate,
-      endDate,
-      price: plan.price,
-      paymentId: paymentResponse?.razorpay_payment_id,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      startDate: new Date('2024-01-01'),
+      endDate: new Date('2025-01-01'),
     };
+    
+    return mockSubscription;
+  } catch (error) {
+    console.error('Error checking subscription:', error);
+    throw error;
+  }
+};
 
-    const docRef = await addDoc(collection(db, 'subscriptions'), subscriptionData);
-    return { id: docRef.id, ...subscriptionData };
+// Get user's current plan details
+export const getCurrentPlan = async (userId) => {
+  try {
+    const subscription = await checkSubscription(userId);
+    
+    // Mock plan details - in production, this would come from your database
+    const plans = {
+      free: {
+        name: 'Free',
+        maxItineraries: 5,
+        features: [
+          'Basic AI recommendations',
+          'Email support',
+          'Mobile app access',
+        ]
+      },
+      basic: {
+        name: 'Basic',
+        maxItineraries: 50,
+        features: [
+          'Advanced AI recommendations',
+          'Priority email support',
+          'Mobile app access',
+          'Premium templates',
+          'Offline access',
+        ]
+      },
+      pro: {
+        name: 'Pro',
+        maxItineraries: Infinity,
+        features: [
+          'Premium AI recommendations',
+          '24/7 VIP support',
+          'Mobile app access',
+          'All premium templates',
+          'Offline access',
+          'Personal travel consultant',
+          'Exclusive deals and discounts',
+        ]
+      }
+    };
+    
+    return plans[subscription.planId];
+  } catch (error) {
+    console.error('Error getting current plan:', error);
+    throw error;
+  }
+};
+
+// Check if user can create a new itinerary
+export const canCreateItinerary = async (userId) => {
+  try {
+    const subscription = await checkSubscription(userId);
+    const plan = await getCurrentPlan(userId);
+    
+    // Mock current itinerary count - in production, this would come from your database
+    const currentItineraryCount = 3; // Example count
+    
+    return {
+      canCreate: currentItineraryCount < plan.maxItineraries,
+      currentCount: currentItineraryCount,
+      maxCount: plan.maxItineraries
+    };
+  } catch (error) {
+    console.error('Error checking if user can create itinerary:', error);
+    throw error;
+  }
+};
+
+// Create a new subscription
+export const createSubscription = async (userId, planId, paymentDetails) => {
+  try {
+    // In a real application, this would make an API call to your backend
+    // which would then create the subscription in your database and payment provider
+    
+    // Mock response - in production, this would be the result of your API call
+    const mockResponse = {
+      success: true,
+      subscription: {
+        id: 'sub_' + Math.random().toString(36).substr(2, 9),
+        userId,
+        planId,
+        status: 'active',
+        startDate: new Date(),
+        endDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
+      }
+    };
+    
+    return mockResponse;
   } catch (error) {
     console.error('Error creating subscription:', error);
     throw error;
   }
 };
 
-export const initiateSubscription = async (userId, plan, user) => {
-  try {
-    if (plan.id === 'free') {
-      return await createSubscription(userId, plan.id);
-    }
-
-    const paymentResponse = await processRazorpayXPayment(plan, user);
-    return await createSubscription(userId, plan.id, paymentResponse);
-  } catch (error) {
-    console.error('Error initiating subscription:', error);
-    throw error;
-  }
-};
-
-export const getUserSubscription = async (userId) => {
-  try {
-    const q = query(
-      collection(db, 'subscriptions'),
-      where('userId', '==', userId),
-      where('status', '==', 'active')
-    );
-
-    const querySnapshot = await getDocs(q);
-    if (querySnapshot.empty) return null;
-
-    const subscription = querySnapshot.docs[0].data();
-    return { id: querySnapshot.docs[0].id, ...subscription };
-  } catch (error) {
-    console.error('Error fetching subscription:', error);
-    throw error;
-  }
-};
-
+// Cancel a subscription
 export const cancelSubscription = async (subscriptionId) => {
   try {
-    const subscriptionRef = doc(db, 'subscriptions', subscriptionId);
-    await updateDoc(subscriptionRef, {
-      status: 'cancelled',
-      updatedAt: new Date(),
-    });
+    // In a real application, this would make an API call to your backend
+    
+    // Mock response
+    const mockResponse = {
+      success: true,
+      message: 'Subscription cancelled successfully'
+    };
+    
+    return mockResponse;
   } catch (error) {
     console.error('Error cancelling subscription:', error);
     throw error;
