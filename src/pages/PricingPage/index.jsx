@@ -24,15 +24,13 @@ const PricingPage = () => {
       features: [
         'Create up to 5 itineraries',
         'Basic AI recommendations',
-        'Email support',
-        'Mobile app access',
-        'Standard templates'
+        'Email support'
+        
       ],
       limitations: [
-        'No offline access',
-        'No premium templates',
+      
         'No priority support',
-        'No custom trip templates',
+
         'No exclusive deals'
       ],
       buttonText: 'Get Started',
@@ -48,15 +46,12 @@ const PricingPage = () => {
       features: [
         'Create up to 50 itineraries',
         'Advanced AI recommendations',
-        'Priority email support',
-        'Mobile app access',
-        'Premium templates',
-        'Offline access',
-        'Custom trip templates'
+        'Priority email support'
+        
       ],
       limitations: [
         'No personal travel consultant',
-        'No VIP support',
+        
         'No exclusive deals'
       ],
       buttonText: 'Choose Basic',
@@ -73,13 +68,10 @@ const PricingPage = () => {
         'Unlimited itineraries',
         'Premium AI recommendations',
         '24/7 VIP support',
-        'Mobile app access',
-        'All premium templates',
-        'Offline access',
-        'Custom trip templates',
+        
         'Personal travel consultant',
-        'Exclusive deals and discounts',
-        'Travel insurance assistance'
+        'Exclusive deals and discounts'
+        
       ],
       limitations: [],
       buttonText: 'Choose Pro',
@@ -314,34 +306,7 @@ const PricingPage = () => {
                   <td className="px-6 py-4 text-center text-sm text-gray-700">Priority Email</td>
                   <td className="px-6 py-4 text-center text-sm text-gray-700">24/7 VIP</td>
                 </tr>
-                <tr>
-                  <td className="px-6 py-4 text-sm font-medium text-gray-900">
-                    Offline Access
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    <FaTimes className="w-5 h-5 mx-auto text-gray-400" />
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    <FaCheck className="w-5 h-5 mx-auto text-primary" />
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    <FaCheck className="w-5 h-5 mx-auto text-secondary" />
-                  </td>
-                </tr>
-                <tr className="bg-gray-50">
-                  <td className="px-6 py-4 text-sm font-medium text-gray-900">
-                    Custom Trip Templates
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    <FaTimes className="w-5 h-5 mx-auto text-gray-400" />
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    <FaCheck className="w-5 h-5 mx-auto text-primary" />
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    <FaCheck className="w-5 h-5 mx-auto text-secondary" />
-                  </td>
-                </tr>
+              
                 <tr>
                   <td className="px-6 py-4 text-sm font-medium text-gray-900">
                     Personal Travel Consultant
