@@ -1,17 +1,17 @@
 import React from 'react';
-import { FaRoute, FaCloudSun, FaLightbulb, FaShieldAlt } from 'react-icons/fa';
+import { FaRoute, FaCloudSun, FaLightbulb, FaShieldAlt ,FaMapMarkedAlt} from 'react-icons/fa';
 import FeatureCard from './FeatureCard';
 
 const features = [
   {
     icon: FaRoute,
-    title: 'Itinerary Creation',
-    description: 'Create detailed travel plans with our easy-to-use itinerary builder.',
+    title: 'Smart Itinerary Planning',
+    description: 'Create detailed day-by-day travel plans optimized for your interests, budget, and schedule.',
   },
   {
-    icon: FaCloudSun,
-    title: 'Weather Updates',
-    description: 'Get real-time weather forecasts for your destination.',
+    icon: FaMapMarkedAlt,
+    title: 'Local Insights',
+    description: 'Get insider tips and hidden gems from our AI that analyzes millions of travel experiences.',
   },
   {
     icon: FaLightbulb,
