@@ -230,7 +230,7 @@ const CreateItineraryPage = () => {
               </label>
               <div className="relative">
                 <GooglePlacesAutocomplete
-                  apiKey={import.meta.env.VITE_GOOGLE_PLACE_API_KEY}
+                  apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
                   selectProps={{
                     place,
                     onChange: (v) => { setPlace(v); handleInputChange('location', v) },
