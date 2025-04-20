@@ -229,7 +229,9 @@ const CreateItineraryPage = () => {
                 Where would you like to go?
               </label>
               <div className="relative">
+
                 <GooglePlacesAutocomplete
+                
                   apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
                   selectProps={{
                     place,
