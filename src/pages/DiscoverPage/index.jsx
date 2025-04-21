@@ -143,6 +143,12 @@ const DiscoveryPage = () => {
       setLoading(false);
     }
   };
+  const getGridCols = (optionsLength) => {
+    if (optionsLength <= 2) return 'grid-cols-1 sm:grid-cols-2';
+    if (optionsLength <= 4) return 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-2';
+    if (optionsLength <= 6) return 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3';
+    return 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4';
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#E6FFF9] to-[#F0FFF9]">
@@ -152,15 +158,15 @@ const DiscoveryPage = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center"
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
           >
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
-              className="bg-white p-12 rounded-2xl shadow-2xl text-center max-w-[600px]"
+              className="bg-white p-6 sm:p-12 rounded-2xl shadow-2xl text-center max-w-[600px] w-full mx-4"
             >
-              <div className="w-full max-w-[300px] sm:max-w-[400px] md:max-w-[500px] mx-auto mb-8">
+              <div className="w-full max-w-[200px] sm:max-w-[300px] md:max-w-[400px] mx-auto mb-8">
                 <DotLottieReact
                   src="https://lottie.host/bfbdceec-736e-4c7f-bd68-50b855968cd3/MzmydP4Z01.lottie"
                   speed="0.5"
@@ -170,24 +176,24 @@ const DiscoveryPage = () => {
                 />
               </div>
       
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
                 Finding Your Perfect Destination
               </h2>
-              <p className="text-lg text-gray-600">
+              <p className="text-base sm:text-lg text-gray-600">
                 Please wait while we are finding your next adventure...
               </p>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="flex items-center justify-between mb-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <div className="flex items-center justify-between mb-8 sm:mb-12">
           <button
             onClick={() => navigate('/')}
             className="flex items-center text-teal-600 hover:text-teal-700 transition-colors font-medium"
           >
             <ArrowLeft className="w-5 h-5 mr-2" />
-            Back to Home
+            <span className="hidden sm:inline">Back to Home</span>
           </button>
           <div className="w-24"></div>
         </div>
@@ -203,11 +209,11 @@ const DiscoveryPage = () => {
             />
           </div>
 
-          <div className="text-center mb-16">
-            <h1 className="text-4xl font-bold text-gray-800 mb-4">
+          <div className="text-center mb-8 sm:mb-16">
+            <h1 className="text-2xl sm:text-4xl font-bold text-gray-800 mb-4">
               {questions[currentQuestion].title}
             </h1>
-            <p className="text-gray-600 text-lg">
+            <p className="text-gray-600 text-base sm:text-lg px-4">
               {questions[currentQuestion].subtitle}
             </p>
           </div>
@@ -221,7 +227,7 @@ const DiscoveryPage = () => {
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.5 }}
               >
-                <div className={`grid ${questions[currentQuestion].options.length > 4 ? 'grid-cols-4' : 'grid-cols-2'} gap-6`}>
+                <div className={`grid ${getGridCols(questions[currentQuestion].options.length)} gap-4 sm:gap-6`}>
                   {questions[currentQuestion].options.map((option) => {
                     const Icon = option.icon;
                     const isSelected = selections[questions[currentQuestion].id] === option.id;
@@ -233,7 +239,7 @@ const DiscoveryPage = () => {
                         whileTap={{ scale: 0.98 }}
                         onClick={() => handleSelection(questions[currentQuestion].id, option.id)}
                         className={`
-                          relative w-full ${questions[currentQuestion].options.length > 4 ? 'h-64' : 'h-80'} text-left cursor-pointer rounded-3xl p-6
+                          relative w-full h-48 sm:h-64 text-left cursor-pointer rounded-2xl sm:rounded-3xl p-4 sm:p-6
                           transition-all duration-300 overflow-hidden group
                           ${isSelected 
                             ? 'bg-gradient-to-br from-teal-500 to-emerald-400 text-white shadow-xl shadow-teal-500/25' 
@@ -242,15 +248,15 @@ const DiscoveryPage = () => {
                       >
                         <div className="relative z-10 h-full flex flex-col">
                           <div className={`
-                            w-16 h-16 rounded-2xl flex items-center justify-center mb-4
+                            w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl flex items-center justify-center mb-4
                             ${isSelected ? 'bg-white/20' : 'bg-teal-50'}
                           `}>
-                            <Icon className={`w-8 h-8 ${isSelected ? 'text-white' : 'text-teal-500'}`} />
+                            <Icon className={`w-6 h-6 sm:w-8 sm:h-8 ${isSelected ? 'text-white' : 'text-teal-500'}`} />
                           </div>
-                          <h3 className={`text-xl font-bold mb-2 ${isSelected ? 'text-white' : 'text-gray-800'}`}>
+                          <h3 className={`text-lg sm:text-xl font-bold mb-2 ${isSelected ? 'text-white' : 'text-gray-800'}`}>
                             {option.label}
                           </h3>
-                          <p className={`text-sm ${isSelected ? 'text-white/90' : 'text-gray-600'}`}>
+                          <p className={`text-xs sm:text-sm ${isSelected ? 'text-white/90' : 'text-gray-600'}`}>
                             {option.description}
                           </p>
                         </div>
@@ -271,7 +277,7 @@ const DiscoveryPage = () => {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mt-12 text-center"
+              className="mt-8 sm:mt-12 text-center"
             >
               <motion.button
                 whileHover={{ scale: 1.05 }}
@@ -279,8 +285,8 @@ const DiscoveryPage = () => {
                 onClick={generatePlaces}
                 disabled={loading}
                 className={`
-                  px-12 py-6 bg-gradient-to-r from-teal-500 to-emerald-400 text-white text-xl 
-                  rounded-full font-semibold transition-all duration-300 transform 
+                  px-8 sm:px-12 py-4 sm:py-6 bg-gradient-to-r from-teal-500 to-emerald-400 text-white 
+                  text-lg sm:text-xl rounded-full font-semibold transition-all duration-300 transform 
                   ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:shadow-lg hover:shadow-teal-500/25 hover:scale-105'}
                 `}
               >
