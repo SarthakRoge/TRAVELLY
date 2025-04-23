@@ -4,11 +4,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Button from '../common/Button';
 
 const backgroundImages = [
-  "https://images.unsplash.com/photo-1469474968028-56623f02e42e",
-  "https://images.unsplash.com/photo-1501785888041-af3ef285b470",
-  "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1",
-  "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
-  "https://images.unsplash.com/photo-1682687982501-1e58ab814714"
+  "/img1.jpg",
+  "/img2.jpg",
+  "/img3.jpg",
+  "/img4.jpg",
+  "/img5.jpg",
+  "/img6.jpg",
 ];
 
 const Hero = () => {

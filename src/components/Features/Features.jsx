@@ -5,7 +5,7 @@ import FeatureCard from './FeatureCard';
 const features = [
   {
     icon: FaRoute,
-    title: 'Smart Itinerary Planning',
+    title: 'AI Itinerary Planning',
     description: 'Create detailed day-by-day travel plans optimized for your interests, budget, and schedule.',
   },
   {
