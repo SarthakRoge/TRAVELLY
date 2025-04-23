@@ -39,12 +39,12 @@ const ContactInfo = () => {
       <ContactItem
         icon={FaMapMarkerAlt}
         title="Address"
-        content="123 Travel Street, Adventure City, TC 12345"
+        content="123 Travel Street, Adventure City, India"
       />
       <ContactItem
         icon={FaPhone}
         title="Phone"
-        content="+1 (555) 123-4567"
+        content="+91 123 456 7890"
       />
       <ContactItem
         icon={FaEnvelope}
